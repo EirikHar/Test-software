@@ -38,10 +38,10 @@ def make_checksum( msg ):
     return "*" + hex(sum1).replace("0x", '')
     
     
-Amp = 5
+Amp = 9
 Fs = 8000
-f = 10
-sample = 8000
+f = 6
+sample = 16000
 x = np.arange(sample)
 y = Amp*(np.sin(2 * np.pi * f * x / Fs))
 
@@ -59,15 +59,16 @@ sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 while True:
     for value in range(0,len(y)):
-        line= "$TEST,%f,%f,%f,%f,%f\r\n" %(y[value],y[value]+1,y[value]+2,y[value]+3,y[value]+4)
+        line= "$TEST,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\r\n" %(y[value],y[value]+1,y[value]+2,y[value]+3,y[value]+4,y[value]+5,y[value]+6,y[value]+7,y[value]+8,y[value]+9)
         line= line + make_checksum(line).upper()
         #print(line)        
         time.sleep(0.01)
         print line 
 
-        sock.sendto(bytes(line), ("10.4.1.21",6090))
+        sock.sendto(bytes(line), ("239.192.239.24",6090))
         #result= subprocess.check_output('echo "%s" > /dev/udp/10.4.1.21/6090' %line)
         #line= "$TEST,%f,%f,%f,%f,%f" %(y[value],y[value]+1,y[value]+2,y[value]+3,y[value]+4,y[value]+5,y[value]+6,y[value]+7,y[value]+8,y[value]+9+random.random())
+
 
         
         
